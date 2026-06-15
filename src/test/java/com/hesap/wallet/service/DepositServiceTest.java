@@ -55,7 +55,7 @@ class DepositServiceTest {
                 .currency(Currency.TRY)
                 .balance(new BigDecimal("100.00"))
                 .build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
+        when(accountRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(account));
         when(accountRepository.save(any(Account.class))).thenAnswer(inv -> inv.getArgument(0));
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(inv -> {
             Transaction t = inv.getArgument(0);
@@ -88,7 +88,7 @@ class DepositServiceTest {
 
     @Test
     void deposit_throwsWhenAccountNotFound_andWritesNoLedgerEntry() {
-        when(accountRepository.findById(999L)).thenReturn(Optional.empty());
+        when(accountRepository.findByIdForUpdate(999L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> depositService.deposit(999L, new DepositRequest(new BigDecimal("10.00"))))
                 .isInstanceOf(AccountNotFoundException.class);

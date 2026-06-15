@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Handles balance top-ups. Increments the account balance and records a DEPOSIT ledger
- * entry atomically; any failure rolls back both writes.
- *
- * <p>Pessimistic locking against concurrent balance mutation is introduced with the
- * transfer engine (where {@code findByIdForUpdate} is added) and will cover deposits too.
+ * Handles balance top-ups. Loads the account under a pessimistic write lock, increments
+ * the balance, and records a DEPOSIT ledger entry atomically; any failure rolls back both
+ * writes. The lock serializes concurrent deposits on the same account (no lost updates).
  */
 @Service
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class DepositService {
 
     @Transactional
     public DepositResponse deposit(Long accountId, DepositRequest request) {
-        Account account = accountRepository.findById(accountId)
+        Account account = accountRepository.findByIdForUpdate(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(accountId));
 
         account.setBalance(account.getBalance().add(request.amount()));
