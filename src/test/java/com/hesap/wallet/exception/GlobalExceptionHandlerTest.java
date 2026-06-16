@@ -4,6 +4,7 @@ import com.hesap.wallet.controller.AccountController;
 import com.hesap.wallet.controller.TransferController;
 import com.hesap.wallet.service.AccountService;
 import com.hesap.wallet.service.DepositService;
+import com.hesap.wallet.service.TransactionHistoryService;
 import com.hesap.wallet.service.transfer.AbstractTransferService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ class GlobalExceptionHandlerTest {
 
     @MockitoBean
     private DepositService depositService;
+
+    @MockitoBean
+    private TransactionHistoryService transactionHistoryService;
 
     @MockitoBean
     private AbstractTransferService transferService;
