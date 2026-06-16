@@ -1,0 +1,14 @@
+target/
+.git/
+.gitignore
+.gitattributes
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+HELP.md
+README.md
+docker-compose.yml
+Dockerfile
+.dockerignore
