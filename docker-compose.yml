@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    image: wallet-transaction-api:latest
+    container_name: wallet-transaction-api
+    ports:
+      - "8080:8080"
+    environment:
+      # H2 runs in-memory inside the app, so no external database is required.
+      SPRING_PROFILES_ACTIVE: default
+    restart: unless-stopped
